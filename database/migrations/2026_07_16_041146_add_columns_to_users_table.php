@@ -12,9 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('photo_path')->nullable()->after('password');
-            $table->boolean('is_staff')->default(true)->after('id');
+            if (! Schema::hasColumn('users', 'is_staff')) {
+                $table->boolean('is_staff')->default(true)->after('id');
+            }
 
+            if (! Schema::hasColumn('users', 'photo_path')) {
+                $table->string('photo_path')->nullable()->after('password');
+            }
         });
     }
 
